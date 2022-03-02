@@ -1,0 +1,29 @@
+# backend
+/discord-backend/.env
+/discord-backend/node_modules
+
+
+# Front end
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/discord-frontend/node_modules
+/discord-frontend/.pnp
+/discord-frontend/.pnp.js
+
+# testing
+/discord-frontend/coverage
+
+# production
+/discord-frontend/build
+
+# misc
+/discord-frontend/.DS_Store
+/discord-frontend/.env.local
+/discord-frontend/.env.development.local
+/discord-frontend/.env.test.local
+/discord-frontend/.env.production.local
+
+/discord-frontend/npm-debug.log*
+/discord-frontend/yarn-debug.log*
+/discord-frontend/yarn-error.log*
