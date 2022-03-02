@@ -1,5 +1,6 @@
 import {
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -8,6 +9,7 @@ import {
 import { useEffect, useState } from "react"
 import { validateMail } from "../../shared/utils/validators"
 import InputWithLabel from "../../shared/components/InputWithLabel"
+import CustomPrimaryButton from "../../shared/components/CustomPrimaryButton"
 
 const AddFriendDialog = ({
   isDialogOpen,
@@ -49,6 +51,18 @@ const AddFriendDialog = ({
             placeholder="Enter mail address"
           />
         </DialogContent>
+        <DialogActions>
+          <CustomPrimaryButton
+            disabled={!isFormValid}
+            label="Send"
+            onClick={handleSendInvitation}
+            additionalStyles={{
+              marginLeft: "15px",
+              marginRight: "15px",
+              marginBottom: "10px",
+            }}
+          />
+        </DialogActions>
       </Dialog>
     </div>
   )
