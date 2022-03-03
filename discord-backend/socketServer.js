@@ -1,4 +1,5 @@
 const verifyTokenSocket = require("./middlewares/authSocket")
+const disconnectHandler = require("./socketHandlers/disconnectHandler")
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler")
 
 const registerSocketServer = (server) => {
@@ -21,6 +22,10 @@ const registerSocketServer = (server) => {
 
     // new connection to socket
     newConnectionHandler(socket, io)
+
+    socket.on("disconnect", () => {
+      disconnectHandler(socket)
+    })
   })
 }
 
