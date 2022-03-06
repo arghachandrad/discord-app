@@ -29,7 +29,7 @@ const getActiveConnections = (userId) => {
   const activeConnections = []
   // multiple device login means multiple socketId , but single userId
 
-  connectedUsers.forEach(function (key, value) {
+  connectedUsers.forEach(function (value, key) {
     if (value.userId === userId) {
       // push socketId of user, because to send data to client we need socketId of that client
       activeConnections.push(key)

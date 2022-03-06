@@ -21,6 +21,8 @@ export const connectWithSocketServer = (userDetails) => {
   // listening custom events
   socket.on("friends-invitations", (data) => {
     const { pendingInvitations } = data
+    console.log("Friends Invitations Data came")
+    console.log(pendingInvitations)
     store.dispatch(setPendingFriendsInvitations(pendingInvitations))
   })
 }

@@ -12,7 +12,7 @@ const updateFriendsPendingInvitations = async (userId) => {
 
     // find if user of specified user Id has active connections
     // if receiver user is online, then only receive this pending inv.list
-    const receiverList = serverStore.getActiveConnections(userId)
+    const receiverList = serverStore.getActiveConnections(userId) // find online Receivers
     // receiverList contains array of socketIds of this current user
 
     const io = serverStore.getSocketServerInstance()
