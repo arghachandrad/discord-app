@@ -18,6 +18,12 @@ const registerSocketServer = (server) => {
     verifyTokenSocket(socket, next)
   })
 
+  const emitOnlineUsers = () => {
+    const onlineUsers = serverStore.getOnlineUsers()
+    // emit to all the users
+    io.emit("online-users", { onlineUsers })
+  }
+
   // getting socket object of a specific user
   io.on("connection", (socket) => {
     console.log("user connected")
@@ -25,11 +31,17 @@ const registerSocketServer = (server) => {
 
     // new connection to socket
     newConnectionHandler(socket, io)
+    emitOnlineUsers()
 
     socket.on("disconnect", () => {
       disconnectHandler(socket)
     })
   })
+
+  // after 8 sec emit online users
+  setInterval(() => {
+    emitOnlineUsers()
+  }, [8000])
 }
 
 module.exports = {

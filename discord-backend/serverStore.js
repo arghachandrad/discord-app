@@ -24,7 +24,7 @@ const removeConnectedUser = (socketId) => {
   }
 }
 
-// get online users
+// get online socketIds of specific userId
 const getActiveConnections = (userId) => {
   const activeConnections = []
   // multiple device login means multiple socketId , but single userId
@@ -39,10 +39,21 @@ const getActiveConnections = (userId) => {
   return activeConnections
 }
 
+const getOnlineUsers = () => {
+  const onlineUsers = []
+
+  connectedUsers.forEach((value, key) => {
+    onlineUsers.push({ socketId: key, userId: value.userId })
+  })
+
+  return onlineUsers
+}
+
 module.exports = {
   addNewConnectedUser,
   removeConnectedUser,
   getActiveConnections,
   getSocketServerInstance,
   setSocketServerInstance,
+  getOnlineUsers,
 }
