@@ -28,7 +28,7 @@ export const connectWithSocketServer = (userDetails) => {
   })
 
   // listing to friend list update
-  socket.on("friend-list", (data) => {
+  socket.on("friends-list", (data) => {
     const { friends } = data
     store.dispatch(setFriends(friends))
   })
