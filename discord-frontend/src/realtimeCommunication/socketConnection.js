@@ -5,6 +5,7 @@ import {
   setOnlineUsers,
 } from "../store/actions/friendsActions"
 import store from "../store/store"
+import { updateDirectChatHistoryIfActive } from "../shared/utils/chat"
 
 let socket = null
 
@@ -15,7 +16,7 @@ export const connectWithSocketServer = (userDetails) => {
       token: jwtToken,
     },
   })
-
+  // -------- event comming from server
   // this is inbuilt socket event
   socket.on("connect", () => {
     console.log("successfully connected with socketio server")
@@ -39,9 +40,18 @@ export const connectWithSocketServer = (userDetails) => {
     const { onlineUsers } = data
     store.dispatch(setOnlineUsers(onlineUsers))
   })
+
+  socket.on("direct-chat-history", (data) => {
+    updateDirectChatHistoryIfActive(data)
+  })
 }
 
+// event emiting to server
 export const sendDirectMessage = (data) => {
   console.log(data)
   socket.emit("direct-message", data)
+}
+
+export const getDirectChatHistory = (data) => {
+  socket.emit("direct-chat-history", data)
 }
