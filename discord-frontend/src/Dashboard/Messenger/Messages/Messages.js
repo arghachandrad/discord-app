@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react"
 import MessagesHeader from "./MessagesHeader"
 import { connect } from "react-redux"
 import Message from "./Message"
+import DateSeperator from "./DateSeperator"
 
 const MainContainer = styled("div")({
   height: "calc(100% - 60px)",
@@ -44,17 +45,26 @@ const Messages = ({ chosenChatDetails, messages }) => {
             )
 
         return (
-          <Message
-            key={message._id}
-            content={message.content}
-            username={message.authorId.username}
-            sameAuthor={sameAuthor}
-            date={convertDateToHumanReadable(
-              new Date(message.date),
-              "dd/mm/yy"
+          <div key={message._id} style={{ width: "97%" }}>
+            {(!sameDay || index === 0) && (
+              <DateSeperator
+                date={convertDateToHumanReadable(
+                  new Date(message.date),
+                  "dd/mm/yy"
+                )}
+              />
             )}
-            sameDay={sameDay}
-          />
+            <Message
+              content={message.content}
+              username={message.authorId.username}
+              sameAuthor={sameAuthor}
+              date={convertDateToHumanReadable(
+                new Date(message.date),
+                "dd/mm/yy"
+              )}
+              sameDay={sameDay}
+            />
+          </div>
         )
       })}
     </MainContainer>
