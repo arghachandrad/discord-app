@@ -1,5 +1,5 @@
 import { styled } from "@mui/system"
-import { useEffect, useRef } from "react"
+// import { useEffect, useRef } from "react"
 import MessagesHeader from "./MessagesHeader"
 import { connect } from "react-redux"
 import Message from "./Message"
