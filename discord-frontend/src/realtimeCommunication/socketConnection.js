@@ -6,6 +6,7 @@ import {
 } from "../store/actions/friendsActions"
 import store from "../store/store"
 import { updateDirectChatHistoryIfActive } from "../shared/utils/chat"
+import * as roomHandler from "./roomHandler"
 
 let socket = null
 
@@ -44,6 +45,10 @@ export const connectWithSocketServer = (userDetails) => {
   socket.on("direct-chat-history", (data) => {
     updateDirectChatHistoryIfActive(data)
   })
+
+  socket.on("room-create", (data) => {
+    roomHandler.newRoomCreated(data)
+  })
 }
 
 // event emiting to server
@@ -54,4 +59,9 @@ export const sendDirectMessage = (data) => {
 
 export const getDirectChatHistory = (data) => {
   socket.emit("direct-chat-history", data)
+}
+
+export const createNewRoom = () => {
+  // we will get the data through token and socketId
+  socket.emit("room-create")
 }

@@ -2,6 +2,7 @@ const verifyTokenSocket = require("./middlewares/authSocket")
 const disconnectHandler = require("./socketHandlers/disconnectHandler")
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler")
 const directMessageHandler = require("./socketHandlers/directMessageHandler")
+const roomCreateHandler = require("./socketHandlers/roomCreateHandler")
 const directChatHistoryHandler = require("./socketHandlers/directChatHistoryHandler")
 const serverStore = require("./serverStore")
 
@@ -46,6 +47,11 @@ const registerSocketServer = (server) => {
 
     socket.on("disconnect", () => {
       disconnectHandler(socket)
+    })
+
+    socket.on("room-create", () => {
+      // socket => from this we can get the ID of user and socketId of the user
+      roomCreateHandler(socket)
     })
   })
 
