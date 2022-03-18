@@ -42,9 +42,14 @@ export const updateActiveRooms = (data) => {
 }
 
 export const joinRoom = (roomId) => {
-  store.dispatch(setRoomDetails({ roomId }))
-  store.dispatch(setOpenRoom(false, true))
-  socketConnection.joinRoom({ roomId })
+  // this func we want to execute once localStream connected successfully, thn create room
+  const successCallbackFunc = () => {
+    store.dispatch(setRoomDetails({ roomId }))
+    store.dispatch(setOpenRoom(false, true))
+    socketConnection.joinRoom({ roomId })
+  }
+
+  webRTCHandler.getLocalStreamPreview(false, successCallbackFunc)
 }
 
 export const leaveRoom = () => {
