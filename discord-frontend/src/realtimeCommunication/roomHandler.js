@@ -2,6 +2,7 @@ import {
   setOpenRoom,
   setRoomDetails,
   setActiveRooms,
+  setLocalStream,
 } from "../store/actions/roomActions"
 import store from "../store/store"
 import * as socketConnection from "./socketConnection"
@@ -56,6 +57,13 @@ export const joinRoom = (roomId) => {
 
 export const leaveRoom = () => {
   const roomId = store.getState().room.roomDetails.roomId
+
+  // get the local stream(audio/video) and close it on leave Room
+  const localStream = store.getState().room.localStream
+  if (localStream) {
+    localStream.getTracks().forEach((track) => track.stop())
+    store.dispatch(setLocalStream(null))
+  }
 
   socketConnection.leaverRoom({ roomId })
   store.dispatch(setRoomDetails(null))
