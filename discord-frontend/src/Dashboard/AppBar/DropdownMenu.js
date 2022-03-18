@@ -4,8 +4,10 @@ import MenuItem from "@mui/material/MenuItem"
 import { IconButton } from "@mui/material"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
 import { logout } from "../../shared/utils/auth"
+import { getActions } from "../../store/actions/roomActions"
+import { connect } from "react-redux"
 
-export default function BasicMenu() {
+const BasicMenu = ({ audioOnly, setAudioOnly }) => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleMenuOpen = (event) => {
@@ -13,6 +15,10 @@ export default function BasicMenu() {
   }
   const handleMenuClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleAudioOnlyChange = () => {
+    setAudioOnly(!audioOnly)
   }
 
   return (
@@ -29,8 +35,25 @@ export default function BasicMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
+        <MenuItem onClick={handleAudioOnlyChange}>
+          {audioOnly ? "Disable Audio Only" : "Enable Audio Only"}
+        </MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
     </div>
   )
 }
+
+const mapStoreStateToProps = ({ room }) => {
+  return {
+    ...room,
+  }
+}
+
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  }
+}
+
+export default connect(mapStoreStateToProps, mapActionsToProps)(BasicMenu)
