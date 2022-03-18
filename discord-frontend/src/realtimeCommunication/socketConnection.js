@@ -69,3 +69,7 @@ export const createNewRoom = () => {
   // we will get the data through token and socketId
   socket.emit("room-create")
 }
+
+export const joinRoom = (data) => {
+  socket.emit("room-join", data)
+}
