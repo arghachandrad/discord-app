@@ -17,3 +17,5 @@ const roomJoinHandler = (socket, data) => {
   // reusing func, used for updating to other users in room that new participants join
   roomsUpdates.updateRooms()
 }
+
+module.exports = roomJoinHandler
