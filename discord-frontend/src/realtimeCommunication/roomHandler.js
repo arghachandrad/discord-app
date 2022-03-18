@@ -5,10 +5,16 @@ import {
 } from "../store/actions/roomActions"
 import store from "../store/store"
 import * as socketConnection from "./socketConnection"
+import * as webRTCHandler from "./webRTCHandler"
 
 export const createNewRoom = () => {
-  store.dispatch(setOpenRoom(true, true))
-  socketConnection.createNewRoom()
+  // this func we want to execute once localStream connected successfully, thn create room
+  const successCallbackFunc = () => {
+    store.dispatch(setOpenRoom(true, true))
+    socketConnection.createNewRoom()
+  }
+
+  webRTCHandler.getLocalStreamPreview(false, successCallbackFunc)
 }
 
 export const newRoomCreated = (data) => {
