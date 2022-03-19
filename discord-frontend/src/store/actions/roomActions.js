@@ -62,7 +62,7 @@ export const setRemoteStreams = (remoteStreams) => {
   }
 }
 
-const setScreenSharingStream = (stream) => {
+export const setScreenSharingStream = (stream) => {
   return {
     type: roomActions.SET_SCREEN_SHARE_STREAM,
     isScreenSharingActive: stream ? true : false,
