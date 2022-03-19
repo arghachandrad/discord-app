@@ -7,6 +7,7 @@ import {
 import store from "../store/store"
 import { updateDirectChatHistoryIfActive } from "../shared/utils/chat"
 import * as roomHandler from "./roomHandler"
+import * as webRTCHandler from "./webRTCHandler"
 
 let socket = null
 
@@ -55,8 +56,11 @@ export const connectWithSocketServer = (userDetails) => {
   })
 
   socket.on("conn-prepare", (data) => {
-    console.log("prepare for connection")
-    console.log(data)
+    const { connUserSocketId } = data
+    webRTCHandler.prepareNewConnection(connUserSocketId, false)
+
+    // after preparing peer other users, they are sending conn-init event to the user who requested them for new connection
+    socket.emit("conn-init", { connUserSocketId })
   })
 }
 
