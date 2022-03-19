@@ -57,10 +57,18 @@ export const connectWithSocketServer = (userDetails) => {
 
   socket.on("conn-prepare", (data) => {
     const { connUserSocketId } = data
-    webRTCHandler.prepareNewConnection(connUserSocketId, false)
+    webRTCHandler.prepareNewConnection(connUserSocketId, false) // here false, as we are not connection, only preparing connection
 
     // after preparing peer other users, they are sending conn-init event to the user who requested them for new connection
     socket.emit("conn-init", { connUserSocketId })
+  })
+
+  socket.on("conn-init", (data) => {
+    // data to which user he should try to initialize the connection
+    const { connUserSocketId } = data
+
+    // NOTE: this time 2nd arg is true, because in this case other users are ready so, we can start connecting
+    webRTCHandler.prepareNewConnection(connUserSocketId, true)
   })
 }
 
