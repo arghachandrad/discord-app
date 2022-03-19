@@ -37,12 +37,19 @@ export const updateActiveRooms = (data) => {
 
   const rooms = []
 
+  const userId = store.getState().auth.userDetails?._id
   activeRooms.forEach((room) => {
-    friends.forEach((f) => {
-      if (f.id === room.roomCreator.userId) {
-        rooms.push({ ...room, creatorUsername: f.username })
-      }
-    })
+    const isRoomCreatedByMe = room.roomCreator.userId === userId
+
+    if (isRoomCreatedByMe) {
+      rooms.push({ ...room, creatorUsername: "Me" })
+    } else {
+      friends.forEach((f) => {
+        if (f.id === room.roomCreator.userId) {
+          rooms.push({ ...room, creatorUsername: f.username })
+        }
+      })
+    }
   })
 
   store.dispatch(setActiveRooms(rooms))
