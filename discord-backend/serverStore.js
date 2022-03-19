@@ -84,8 +84,12 @@ const getActiveRoom = (roomId) => {
     (activeRoom) => activeRoom.roomId === roomId
   )
 
-  return {
-    ...activeRoom,
+  if (activeRoom) {
+    return {
+      ...activeRoom,
+    }
+  } else {
+    return null
   }
 }
 
