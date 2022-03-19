@@ -1,4 +1,4 @@
-import { setLocalStream } from "../store/actions/roomActions"
+import { setLocalStream, setRemoteStreams } from "../store/actions/roomActions"
 import store from "../store/store"
 import Peer from "simple-peer"
 import * as socketConnection from "./socketConnection"
@@ -78,10 +78,8 @@ export const prepareNewConnection = (connUserSocketId, isInitiator) => {
 
   // if the conn is established with other user, we share the remote stream
   peers[connUserSocketId].on("stream", (remoteStream) => {
-    // TODO
-    // add new remote stream to our server store
-    console.log("remote stream came from other user")
-    console.log("direct connection has been established")
+    remoteStream.connUserSocketId = connUserSocketId // it will be helpfull when user let, we can know which remote stream to remove
+    addNewRemoteStream(remoteStream)
   })
 }
 
@@ -93,4 +91,11 @@ export const handleSignalingData = (data) => {
     // adding other user's signal data to peer obejct
     peers[connUserSocketId].signal(signal) // this is exchanging ICE cand. and SDP, so now streams can be received (remote stream)
   }
+}
+
+const addNewRemoteStream = (remoteStream) => {
+  const remoteStreams = store.getState().room.remoteStreams
+  const newRemoteStreams = [...remoteStreams, remoteStream]
+
+  store.dispatch(setRemoteStreams(newRemoteStreams))
 }
