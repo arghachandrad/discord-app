@@ -70,6 +70,11 @@ export const connectWithSocketServer = (userDetails) => {
     // NOTE: this time 2nd arg is true, because in this case other users are ready so, we can start connecting
     webRTCHandler.prepareNewConnection(connUserSocketId, true)
   })
+
+  // receiving socket signal of other user
+  socket.on("conn-signal", (data) => {
+    webRTCHandler.handleSignalingData(data)
+  })
 }
 
 // event emiting to server
@@ -93,4 +98,8 @@ export const joinRoom = (data) => {
 
 export const leaverRoom = (data) => {
   socket.emit("room-leave", data)
+}
+
+export const signalPeerData = (data) => {
+  socket.emit("conn-signal", data)
 }

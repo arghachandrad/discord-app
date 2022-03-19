@@ -1,6 +1,7 @@
 import { setLocalStream } from "../store/actions/roomActions"
 import store from "../store/store"
 import Peer from "simple-peer"
+import * as socketConnection from "./socketConnection"
 
 const getConfiguration = () => {
   const turnIceServer = null
@@ -71,15 +72,25 @@ export const prepareNewConnection = (connUserSocketId, isInitiator) => {
       signal: data,
       connUserSocketId, // to which user you want to pass the signalling data(ICE candidate)
     }
-  })
 
-  // TODO
-  // Pass signalling data to other user
-  // socketConnection.signalPeerData(signalData);
+    socketConnection.signalPeerData(signalData) // sending ICE cand. and SDP data i.e. passing signalling data to other users
+  })
 
   // if the conn is established with other user, we share the remote stream
   peers[connUserSocketId].on("stream", (remoteStream) => {
     // TODO
     // add new remote stream to our server store
+    console.log("remote stream came from other user")
+    console.log("direct connection has been established")
   })
+}
+
+export const handleSignalingData = (data) => {
+  // connUserSocketId: who's signal it is
+  const { connUserSocketId, signal } = data
+
+  if (peers[connUserSocketId]) {
+    // adding other user's signal data to peer obejct
+    peers[connUserSocketId].signal(signal) // this is exchanging ICE cand. and SDP, so now streams can be received (remote stream)
+  }
 }
