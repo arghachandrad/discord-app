@@ -99,3 +99,32 @@ const addNewRemoteStream = (remoteStream) => {
 
   store.dispatch(setRemoteStreams(newRemoteStreams))
 }
+
+// executed by who is leaving the room
+export const closeAllConnections = () => {
+  Object.entries(peers).forEach((mappedObject) => {
+    const connUserSocketId = mappedObject[0]
+    if (peers[connUserSocketId]) {
+      peers[connUserSocketId].destroy()
+      delete peers[connUserSocketId] // closing all the RTC connection
+    }
+  })
+}
+
+// executed by other users after one user left the room
+export const handleParticipantLeftRoom = (data) => {
+  const { connUserSocketId } = data
+
+  if (peers[connUserSocketId]) {
+    peers[connUserSocketId].destroy()
+    delete peers[connUserSocketId] // delete RTC connection by other users
+  }
+
+  // also after disconnecting the stream, remove the stream from store
+  const remoteStreams = store.getState().room.remoteStreams
+  const newRemoteStreams = remoteStreams.filter(
+    (remoteStream) => remoteStream.connUserSocketId !== connUserSocketId
+  )
+
+  store.dispatch(setRemoteStreams(newRemoteStreams))
+}
