@@ -5,6 +5,7 @@ import {
   setLocalStream,
   setRemoteStreams,
   setScreenSharingStream,
+  setIsUserJoinedOnlyWithAudio,
 } from "../store/actions/roomActions"
 import store from "../store/store"
 import * as socketConnection from "./socketConnection"
@@ -14,6 +15,8 @@ export const createNewRoom = () => {
   // this func we want to execute once localStream connected successfully, thn create room
   const successCallbackFunc = () => {
     store.dispatch(setOpenRoom(true, true))
+    const audioOnly = store.getState().room.audioOnly
+    store.dispatch(setIsUserJoinedOnlyWithAudio(audioOnly))
     socketConnection.createNewRoom()
   }
 
@@ -50,6 +53,10 @@ export const joinRoom = (roomId) => {
   const successCallbackFunc = () => {
     store.dispatch(setRoomDetails({ roomId }))
     store.dispatch(setOpenRoom(false, true))
+
+    const audioOnly = store.getState().room.audioOnly
+    store.dispatch(setIsUserJoinedOnlyWithAudio(audioOnly))
+
     socketConnection.joinRoom({ roomId })
   }
 
